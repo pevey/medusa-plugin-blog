@@ -11,7 +11,7 @@ export default (rootDirectory: string): Router | Router[] => {
 	const storeCorsOptions = { origin: config.projectConfig.store_cors.split(","), credentials: true, }
 	const adminCorsOptions = { origin: config.projectConfig.admin_cors.split(","), credentials: true, }
 
-   const router = Router()
+	const router = Router()
 
 	// BLOG - GET ALL BLOG POSTS
 	router.get("/store/blog", cors(storeCorsOptions), async (req, res) => {
@@ -225,7 +225,7 @@ export default (rootDirectory: string): Router | Router[] => {
 			return res.json({blog_tag})
 		})
 	})
-	
+
 	// BLOG - DELETE A BLOG TAG
 	router.delete("/admin/blog/tags/:id", cors(adminCorsOptions), async (req, res) => {
 		const blogService = req.scope.resolve("blogService")
@@ -234,5 +234,5 @@ export default (rootDirectory: string): Router | Router[] => {
 		})
 	})
 
-   return router
+	return router
 }
