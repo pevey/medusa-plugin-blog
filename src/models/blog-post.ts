@@ -27,9 +27,9 @@ export class BlogPost extends BaseEntity {
 	description: string | null
 
 	@Column({ type: "text", nullable: true, array: true })
-	keywords: string | null
+	keywords: string[] | null
 
-	@Column({ type: "varchar", nullable: false })
+	@Column({ type: "varchar", nullable: true })
 	category_id: string
 	
 	@ManyToOne(() => BlogCategory)
