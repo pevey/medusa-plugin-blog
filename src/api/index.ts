@@ -2,8 +2,6 @@ import cors from "cors"
 import configLoader from "@medusajs/medusa/dist/loaders/config"
 import { Router } from "express"
 import * as bodyParser from "body-parser"
-//import { User, UserService, Customer, CustomerService } from "@medusajs/medusa"
-import { authenticateCustomer } from "@medusajs/medusa"
 import { MedusaError } from "@medusajs/utils"
 import { z } from "zod"
 
@@ -16,12 +14,7 @@ export default (rootDirectory: string): Router | Router[] => {
    const router = Router()
 
    // REVIEWS - GET ALL REVIEWS FOR A PRODUCT
-	//router.use("/store/products/:id/reviews", authenticateCustomer())
-	router.use(authenticateCustomer())
-	//router.get("/store/products/:id/reviews", cors(storeCorsOptions), authenticateCustomer(), async (req, res) => {
 	router.get("/store/products/:id/reviews", cors(storeCorsOptions), async (req, res) => {
-// console.log('get reviews')
-// console.log(req.user)
       const productReviewService = req.scope.resolve("productReviewService")
       productReviewService.getProductReviews(req.params.id).then((product_reviews) => {
          return res.json({product_reviews})
@@ -29,7 +22,6 @@ export default (rootDirectory: string): Router | Router[] => {
    })
 
    // REVIEWS - GET ALL REVIEWS FOR A CUSTOMER
-	// router.use("/store/customers/:id/reviews", authenticate(), getCustomer)
    router.get("/store/customers/:id/reviews", async (req, res) => {
       const productReviewService = req.scope.resolve("productReviewService")
       productReviewService.getCustomerProductReviews(req.params.id).then((product_reviews) => {
@@ -38,7 +30,6 @@ export default (rootDirectory: string): Router | Router[] => {
    })
    
    // REVIEWS - ADD A NEW REVIEW FOR A PRODUCT
-   //router.use("/store/products/:id/reviews", authenticate(), getCustomer, bodyParser.json())
 	router.use("/store/products/:id/reviews", bodyParser.json())
    router.post("/store/products/:id/reviews", async (req, res) => {
 		const schema = z.object({
@@ -69,7 +60,6 @@ export default (rootDirectory: string): Router | Router[] => {
    })
 
    // REVIEWS - UPDATE A REVIEW FOR A PRODUCT
-   //router.use("/store/reviews/:id", authenticate(), getCustomer, bodyParser.json())
 	router.use("/store/reviews/:id", bodyParser.json())
    router.post("/store/reviews/:id", async (req, res) => {
 		const schema = z.object({
@@ -104,7 +94,6 @@ export default (rootDirectory: string): Router | Router[] => {
    })
 
    // REVIEWS - ADMIN EDIT A REVIEW FOR A PRODUCT
-   //router.use("/admin/reviews/:id", bodyParser.json(), authenticate(), getUser)
 	router.use("/admin/reviews/:id", bodyParser.json())
    router.post("/admin/reviews/:id", async (req, res) => {
       const productReviewService = req.scope.resolve("productReviewService")
@@ -116,25 +105,3 @@ export default (rootDirectory: string): Router | Router[] => {
 
    return router
 }
-
-// async function getCustomer(req, res, next) {
-// console.log('getCustomer')
-// 	let loggedInCustomer: Customer | null = null
-// 	if (req.customer && req.customer.customerId) {
-// console.log(req.customer.customerId)
-// 		const customerService = req.scope.resolve("customerService") as CustomerService
-// 		loggedInCustomer = await customerService.retrieve(req.customer.customerId)
-// 	}
-// 	req.scope.register({ loggedInCustomer: { resolve: () => loggedInCustomer }})
-// 	next()
-// }
-
-// async function getUser(req, res, next) {
-// 	let loggedInUser: User | null = null
-// 	if (req.user && req.user.userId) {
-// 		const userService = req.scope.resolve("userService") as UserService
-// 		loggedInUser = await userService.retrieve(req.user.userId)
-// 	}
-// 	req.scope.register({ loggedInUser: { resolve: () => loggedInUser }})
-// 	next()
-// }

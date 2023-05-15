@@ -8,7 +8,7 @@ export class Blog1684173263726 implements MigrationInterface {
 			"handle" character varying,
 			"title" character varying NOT NULL,
 			"description" character varying,
-			"keywords" varchar[],
+			"keywords" varchar array,
 			"metadata" jsonb)`
 		)
 		await queryRunner.createPrimaryKey("blog_category", ["id"])
@@ -21,7 +21,7 @@ export class Blog1684173263726 implements MigrationInterface {
 			"published" boolean NOT NULL DEFAULT false,
 			"content" character varying,
 			"description" character varying,
-			"keywords" varchar[],
+			"keywords" varchar array,
 			"category_id" character varying,
 			"metadata" jsonb,
 			"created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
@@ -94,19 +94,19 @@ export class Blog1684173263726 implements MigrationInterface {
 		await queryRunner.createForeignKey("blog_collection_tags", new TableForeignKey({
 			columnNames: ["collection_id"],
 			referencedColumnNames: ["id"],
-			referencedTableName: "collection",
+			referencedTableName: "product_collection",
 			onDelete: "CASCADE",
 			onUpdate: "CASCADE"
 		}))
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-		await queryRunner.dropTable("blog_category", true)
-		await queryRunner.dropTable("blog_post", true)
-		await queryRunner.dropTable("blog_tag", true)
-		await queryRunner.dropTable("blog_tags", true)
-		await queryRunner.dropTable("blog_product_tags", true)
-		await queryRunner.dropTable("blog_collection_tags", true)
+		 await queryRunner.dropTable("blog_tags", true)
+		 await queryRunner.dropTable("blog_product_tags", true)
+		 await queryRunner.dropTable("blog_collection_tags", true)
+		 await queryRunner.dropTable("blog_tag", true)
+		 await queryRunner.dropTable("blog_post", true)
+		 await queryRunner.dropTable("blog_category", true)
     }
 
 }
