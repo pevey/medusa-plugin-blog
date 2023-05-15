@@ -9,7 +9,7 @@ export default (rootDirectory: string): Router | Router[] => {
 
 	const config = configLoader(rootDirectory)
 	const storeCorsOptions = { origin: config.projectConfig.store_cors.split(","), credentials: true, }
-   const adminCorsOptions = { origin: config.projectConfig.admin_cors.split(","), credentials: true, }
+	const adminCorsOptions = { origin: config.projectConfig.admin_cors.split(","), credentials: true, }
 
    const router = Router()
 
