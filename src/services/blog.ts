@@ -85,7 +85,8 @@ export default class BlogService extends TransactionBaseService {
 		/* @ts-ignore */
 		const blogPostRepository = this.activeManager_.withRepository(this.blogPostRepository_)
 		return await blogPostRepository.findOne({
-			where: { id }
+			where: { id },
+			relations: ["category", "tags", "products", "collections"]
 		})
 	}
 
@@ -174,4 +175,9 @@ export default class BlogService extends TransactionBaseService {
 		const blogTagRepository = this.activeManager_.withRepository(this.blogTagRepository_)
 		return await blogTagRepository.delete(id)
 	}
+
+	async 
+
+
+
 }
