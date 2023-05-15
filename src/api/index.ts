@@ -13,95 +13,226 @@ export default (rootDirectory: string): Router | Router[] => {
 
    const router = Router()
 
-   // REVIEWS - GET ALL REVIEWS FOR A PRODUCT
-	router.get("/store/products/:id/reviews", cors(storeCorsOptions), async (req, res) => {
-      const productReviewService = req.scope.resolve("productReviewService")
-      productReviewService.getProductReviews(req.params.id).then((product_reviews) => {
-         return res.json({product_reviews})
-      })
-   })
-
-   // REVIEWS - GET ALL REVIEWS FOR A CUSTOMER
-   router.get("/store/customers/:id/reviews", async (req, res) => {
-      const productReviewService = req.scope.resolve("productReviewService")
-      productReviewService.getCustomerProductReviews(req.params.id).then((product_reviews) => {
-         return res.json({product_reviews})
-      })
-   })
-   
-   // REVIEWS - ADD A NEW REVIEW FOR A PRODUCT
-	router.use("/store/products/:id/reviews", bodyParser.json())
-   router.post("/store/products/:id/reviews", async (req, res) => {
-		const schema = z.object({
-			customer_id: z.string().min(1),
-			display_name: z.string().min(1),
-			content: z.string().min(1),
-			rating: z.coerce.number().min(0).max(5),
+	// BLOG - GET ALL BLOG POSTS
+	router.get("/store/blog", cors(storeCorsOptions), async (req, res) => {
+		const blogService = req.scope.resolve("blogService")
+		blogService.getBlogPosts().then((blog_posts) => {
+			return res.json({blog_posts})
 		})
-		/* @ts-ignore */
-		const { success, error, data } = schema.safeParse(req.body)
-		if (!success) {
-			throw new MedusaError(MedusaError.Types.INVALID_DATA, error)
+	})
+
+	// BLOG - GET A SINGLE BLOG POST BY HANDLE
+	router.get("/store/blog/:handle", cors(storeCorsOptions), async (req, res) => {
+		const blogService = req.scope.resolve("blogService")
+		blogService.getBlogPostByHandle(req.params.handle).then((blog_post) => {
+			return res.json({blog_post})
+		})
+	})
+
+	// BLOG - GET ALL BLOG CATEGORIES
+	router.get("/store/blog/categories", cors(storeCorsOptions), async (req, res) => {
+		const blogService = req.scope.resolve("blogService")
+		blogService.getBlogCategories().then((blog_categories) => {
+			return res.json({blog_categories})
+		})
+	})
+
+	// BLOG - GET A SINGLE BLOG CATEGORY BY HANDLE
+	router.get("/store/blog/categories/:handle", cors(storeCorsOptions), async (req, res) => {
+		const blogService = req.scope.resolve("blogService")
+		blogService.getBlogCategoryByHandle(req.params.handle).then((blog_category) => {
+			return res.json({blog_category})
+		})
+	})
+
+	// BLOG - GET ALL BLOG TAGS
+	router.get("/store/blog/tags", cors(storeCorsOptions), async (req, res) => {
+		const blogService = req.scope.resolve("blogService")
+		blogService.getBlogTags().then((blog_tags) => {
+			return res.json({blog_tags})
+		})
+	})
+
+	// BLOG - GET ALL BLOG POSTS TAGGED WITH A TAG OR AN ARRAY OF TAGS
+	router.get("/store/blog/tags", cors(storeCorsOptions), async (req, res) => {
+		const tags = req.query.tags
+		const blogService = req.scope.resolve("blogService")
+		if (Array.isArray(tags)) { 
+			blogService.getBlogPostsAllTags(tags).then((blog_posts) => {
+				return res.json({blog_posts})
+			})
 		} else {
-			const productReviewService = req.scope.resolve("productReviewService")
-			productReviewService.addProductReview(req.params.id, data.customer_id, data.display_name, data.content, data.rating)
-			.then((product_review) => {
-				return res.json({product_review})
+			blogService.getBlogPostsByTag(tags).then((blog_posts) => {
+				return res.json({blog_posts})
 			})
 		}
-   })
+	})
 
-   // REVIEWS - GET A SINGLE REVIEW
-   router.get("/store/reviews/:id", async (req, res) => {
-      const productReviewService = req.scope.resolve("productReviewService")
-      productReviewService.getReview(req.params.id).then((product_review) => {
-         return res.json({product_review})
-      })
-   })
+	// BLOG - GET ALL BLOG POSTS TAGGED WITH A PRODUCT
+	router.get("/store/blog/products/:id", cors(storeCorsOptions), async (req, res) => {
+		const blogService = req.scope.resolve("blogService")
+		blogService.getBlogPostsByProduct(req.params.id).then((blog_posts) => {
+			return res.json({blog_posts})
+		})
+	})
 
-   // REVIEWS - UPDATE A REVIEW FOR A PRODUCT
-	router.use("/store/reviews/:id", bodyParser.json())
-   router.post("/store/reviews/:id", async (req, res) => {
+	// BLOG - GET ALL BLOG POSTS TAGGED WITH A COLLECTION
+	router.get("/store/blog/collections/:id", cors(storeCorsOptions), async (req, res) => {
+		const blogService = req.scope.resolve("blogService")
+		blogService.getBlogPostsByCollection(req.params.id).then((blog_posts) => {
+			return res.json({blog_posts})
+		})
+	})
+
+	// BLOG - ADD A BLOG CATEGORY
+	router.use("/admin/blog/categories", bodyParser.json())
+	router.post("/admin/blog/categories", cors(adminCorsOptions), async (req, res) => {
 		const schema = z.object({
-			customer_id: z.string().min(1),
-			display_name: z.string().min(1),
-			content: z.string().min(1),
-			rating: z.coerce.number().min(0).max(5),
+			handle: z.string().optional(),
+			title: z.string().min(1),
+			description: z.string().optional(),
+			keywords: z.string().array().optional(),
+			metadata: z.object({}).passthrough() as z.ZodObject<{}>,
 		})
 		/* @ts-ignore */
 		const { success, error, data } = schema.safeParse(req.body)
 		if (!success) {
 			throw new MedusaError(MedusaError.Types.INVALID_DATA, error)
-		} else {
 		}
-      const productReviewService = req.scope.resolve("productReviewService")
-      const productReview = await productReviewService.getProductReviews(req.params.id)
-      if (productReview.customer_id !== req.body.userId) {
-         return res.status(401).json({ message: "Unauthorized" })
-      }
-      productReviewService.updateProductReview(req.params.id, req.body.display_name, req.body.content, req.body.rating)
-      .then((product_review) => {
-         return res.json({product_review})
-      })
-   })
+		const blogService = req.scope.resolve("blogService")
+		blogService.createBlogCategory(data).then((blog_category) => {
+			return res.json({blog_category})
+		})
+	})
 
-   // REVIEWS - ADMIN GET ALL REVIEWS FOR A PRODUCT
-   router.get("/admin/products/:id/reviews", async (req, res) => {
-      const productReviewService = req.scope.resolve("productReviewService")
-      productReviewService.getProductReviews(req.params.id).then((product_reviews) => {
-         return res.json({product_reviews})
-      })
-   })
+	// BLOG - UPDATE A BLOG CATEGORY
+	router.use("/admin/blog/categories/:id", bodyParser.json())
+	router.post("/admin/blog/categories/:id", cors(adminCorsOptions), async (req, res) => {
+		const schema = z.object({
+			handle: z.string().optional(),
+			title: z.string().min(1),
+			description: z.string().optional(),
+			keywords: z.string().array().optional(),
+			metadata: z.object({}).passthrough() as z.ZodObject<{}>,
+		})
+		/* @ts-ignore */
+		const { success, error, data } = schema.safeParse(req.body)
+		if (!success) {
+			throw new MedusaError(MedusaError.Types.INVALID_DATA, error)
+		}
+		const blogService = req.scope.resolve("blogService")
+		blogService.updateBlogCategory(req.params.id, data).then((blog_category) => {
+			return res.json({blog_category})
+		})
+	})
 
-   // REVIEWS - ADMIN EDIT A REVIEW FOR A PRODUCT
-	router.use("/admin/reviews/:id", bodyParser.json())
-   router.post("/admin/reviews/:id", async (req, res) => {
-      const productReviewService = req.scope.resolve("productReviewService")
-      productReviewService.editProductReview(req.params.id, req.body.display_name, req.body.content, req.body.rating, req.body.approved)
-      .then((product_review) => {
-         return res.json({product_review})
-      })
-   })
+	// BLOG - DELETE A BLOG CATEGORY
+	router.delete("/admin/blog/categories/:id", cors(adminCorsOptions), async (req, res) => {
+		const blogService = req.scope.resolve("blogService")
+		blogService.deleteBlogCategory(req.params.id).then(() => {
+			return res.sendStatus(200)
+		})
+	})
+
+	// BLOG - ADD A BLOG POST
+	router.use("/admin/blog/posts", bodyParser.json())
+	router.post("/admin/blog/posts", cors(adminCorsOptions), async (req, res) => {
+		const schema = z.object({
+			handle: z.string().optional(),
+			title: z.string().min(1),
+			author: z.string().optional(),
+			published: z.boolean().default(false),
+			content: z.string().optional(),
+			description: z.string().optional(),
+			keywords: z.string().array().optional(),
+			category_id: z.string().optional(),
+			metadata: z.object({}).passthrough() as z.ZodObject<{}>
+		})
+		/* @ts-ignore */
+		const { success, error, data } = schema.safeParse(req.body)
+		if (!success) {
+			throw new MedusaError(MedusaError.Types.INVALID_DATA, error)
+		}
+		const blogService = req.scope.resolve("blogService")
+		blogService.addBlogPost(data).then((blog_post) => {
+			return res.json({blog_post})
+		})
+	})
+
+	// BLOG - UPDATE A BLOG POST
+	router.use("/admin/blog/posts/:id", bodyParser.json())
+	router.post("/admin/blog/posts/:id", cors(adminCorsOptions), async (req, res) => {
+		const schema = z.object({
+			handle: z.string().optional(),
+			title: z.string().min(1),
+			author: z.string().optional(),
+			published: z.boolean().default(false),
+			content: z.string().optional(),
+			description: z.string().optional(),
+			keywords: z.string().array().optional(),
+			category_id: z.string().optional(),
+			metadata: z.object({}).passthrough() as z.ZodObject<{}>
+		})
+		/* @ts-ignore */
+		const { success, error, data } = schema.safeParse(req.body)
+		if (!success) {
+			throw new MedusaError(MedusaError.Types.INVALID_DATA, error)
+		}
+		const blogService = req.scope.resolve("blogService")
+		blogService.updateBlogPost(req.params.id, data).then((blog_post) => {
+			return res.json({blog_post})
+		})
+	})
+
+	// BLOG - DELETE A BLOG POST
+	router.delete("/admin/blog/posts/:id", cors(adminCorsOptions), async (req, res) => {
+		const blogService = req.scope.resolve("blogService")
+		blogService.deleteBlogPost(req.params.id).then(() => {
+			return res.sendStatus(200)
+		})
+	})
+
+	// BLOG - ADD A BLOG TAG
+	router.use("/admin/blog/tags", bodyParser.json())
+	router.post("/admin/blog/tags", cors(adminCorsOptions), async (req, res) => {
+		const schema = z.object({
+			value: z.string().min(1)
+		})
+		/* @ts-ignore */
+		const { success, error, data } = schema.safeParse(req.body)
+		if (!success) {
+			throw new MedusaError(MedusaError.Types.INVALID_DATA, error)
+		}
+		const blogService = req.scope.resolve("blogService")
+		blogService.addBlogTag(data.value).then((blog_tag) => {
+			return res.json({blog_tag})
+		})
+	})
+
+	// BLOG - UPDATE A BLOG TAG
+	router.use("/admin/blog/tags/:id", bodyParser.json())
+	router.post("/admin/blog/tags/:id", cors(adminCorsOptions), async (req, res) => {
+		const schema = z.object({
+			value: z.string().min(1)
+		})
+		/* @ts-ignore */
+		const { success, error, data } = schema.safeParse(req.body)
+		if (!success) {
+			throw new MedusaError(MedusaError.Types.INVALID_DATA, error)
+		}
+		const blogService = req.scope.resolve("blogService")
+		blogService.updateBlogTag(req.params.id, data.value).then((blog_tag) => {
+			return res.json({blog_tag})
+		})
+	})
+	
+	// BLOG - DELETE A BLOG TAG
+	router.delete("/admin/blog/tags/:id", cors(adminCorsOptions), async (req, res) => {
+		const blogService = req.scope.resolve("blogService")
+		blogService.deleteBlogTag(req.params.id).then(() => {
+			return res.sendStatus(200)
+		})
+	})
 
    return router
 }

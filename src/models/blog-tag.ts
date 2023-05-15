@@ -5,7 +5,7 @@ import { BeforeInsert, Column, Entity } from "typeorm"
 export class BlogTag extends BaseEntity {
 
 	@Column({ type: "varchar", nullable: false })
-	title: string
+	value: string
 
 	@BeforeInsert()
 	private beforeInsert(): void {

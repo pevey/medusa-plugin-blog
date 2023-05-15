@@ -255,23 +255,23 @@ export default class BlogService extends TransactionBaseService {
 		return await blogTagRepository.find()
 	}
 
-	async addBlogTag(title) {
-		if (!title) throw new Error("Adding a blog tag requires a title")
+	async addBlogTag(value) {
+		if (!value) throw new Error("Adding a blog tag requires a title")
 		/* @ts-ignore */
 		const blogTagRepository = this.activeManager_.withRepository(this.blogTagRepository_)
 		const createdTag = blogTagRepository.create({
-			title
+			value
 		})
 		const blogTag = await blogTagRepository.save(createdTag)
 		return blogTag
 	}
 
-	async updateBlogTag(id, title) {
-		if (!id || !title) throw new Error("Updating a blog tag requires an id and a title")
+	async updateBlogTag(id, value) {
+		if (!id || !value) throw new Error("Updating a blog tag requires an id and a title")
 		/* @ts-ignore */
 		const blogTagRepository = this.activeManager_.withRepository(this.blogTagRepository_)
 		const blogTag = blogTagRepository.update(id, {
-			title
+			value
 		})
 		return blogTag
 	}

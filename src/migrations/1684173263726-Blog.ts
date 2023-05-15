@@ -38,7 +38,7 @@ export class Blog1684173263726 implements MigrationInterface {
 
 		await queryRunner.query(
 			`CREATE TABLE IF NOT EXISTS "blog_tag" ("id" character varying NOT NULL,
-			"title" character varying NOT NULL)`
+			"value" character varying NOT NULL)`
 		)
 		await queryRunner.createPrimaryKey("blog_tag", ["id"])
 
