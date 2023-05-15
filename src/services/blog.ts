@@ -2,6 +2,7 @@ import { TransactionBaseService } from '@medusajs/utils'
 import { BlogCategoryRepository } from '../repositories/blog-category'
 import { BlogPostRepository } from '../repositories/blog-post'
 import { BlogTagRepository } from '../repositories/blog-tag'
+import { ArrayContains, ArrayOverlap } from 'typeorm'
 
 export default class BlogService extends TransactionBaseService {
 	protected readonly blogCategoryRepository_: typeof BlogCategoryRepository
@@ -26,6 +27,14 @@ export default class BlogService extends TransactionBaseService {
 		const blogCategoryRepository = this.activeManager_.withRepository(this.blogCategoryRepository_)
 		return await blogCategoryRepository.findOne({
 			where: { id }
+		})
+	}
+
+	async getBlogCategoryByHandle(handle) {
+		/* @ts-ignore */
+		const blogCategoryRepository = this.activeManager_.withRepository(this.blogCategoryRepository_)
+		return await blogCategoryRepository.findOne({
+			where: { handle }
 		})
 	}
 
@@ -73,7 +82,7 @@ export default class BlogService extends TransactionBaseService {
 		return await blogPostRepository.find()
 	}
 
-	async getBlogCategoryPosts(category_id) {
+	async getBlogPostsByCategory(category_id) {
 		/* @ts-ignore */
 		const blogPostRepository = this.activeManager_.withRepository(this.blogPostRepository_)
 		return await blogPostRepository.find({
@@ -81,12 +90,110 @@ export default class BlogService extends TransactionBaseService {
 		})
 	}
 
+	async getBlogPostsByCategoryHandle(handle) {
+		/* @ts-ignore */
+		const blogPostRepository = this.activeManager_.withRepository(this.blogPostRepository_)
+		return await blogPostRepository.find({
+			relations: {
+				category: true,
+				tags: true,
+				products: true,
+				collections: true
+			},
+			where: { category: { handle } }
+		})
+	}
+	
+	async getBlogPostsByTag(tag_id) {
+		/* @ts-ignore */
+		const blogPostRepository = this.activeManager_.withRepository(this.blogPostRepository_)
+		return await blogPostRepository.find({
+			relations: {
+				category: true,
+				tags: true,
+				products: true,
+				collections: true
+			},
+			where: {
+				tags: ArrayContains(tag_id)
+			}
+		})
+	}
+
+	async getBlogPostsAllTags(tag_ids) {
+		/* @ts-ignore */
+		const blogPostRepository = this.activeManager_.withRepository(this.blogPostRepository_)
+		return await blogPostRepository.find({
+			relations: {
+				category: true,
+				tags: true,
+				products: true,
+				collections: true
+			},
+			where: {
+				tags: ArrayOverlap(tag_ids)
+			}
+		})
+	}
+	
+	async getBlogPostsByProduct(product_id) {
+		/* @ts-ignore */
+		const blogPostRepository = this.activeManager_.withRepository(this.blogPostRepository_)
+		return await blogPostRepository.find({
+			relations: {
+				category: true,
+				tags: true,
+				products: true,
+				collections: true
+			},
+			where: { 
+				products: ArrayContains(product_id) 
+			}
+		})
+	}
+
+	async getBlogPostsByCollection(collection_id) {
+		/* @ts-ignore */
+		const blogPostRepository = this.activeManager_.withRepository(this.blogPostRepository_)
+		return await blogPostRepository.find({
+			relations: {
+				category: true,
+				tags: true,
+				products: true,
+				collections: true
+			},
+			where: {
+				collections: ArrayContains(collection_id)
+			}
+		})
+	}
+	
+
 	async getBlogPost(id) {
 		/* @ts-ignore */
 		const blogPostRepository = this.activeManager_.withRepository(this.blogPostRepository_)
 		return await blogPostRepository.findOne({
-			where: { id },
-			relations: ["category", "tags", "products", "collections"]
+			relations: {
+				category: true,
+				tags: true,
+				products: true,
+				collections: true
+			},
+			where: { id }
+		})
+	}
+
+	async getBlogPostByHandle(handle) {
+		/* @ts-ignore */
+		const blogPostRepository = this.activeManager_.withRepository(this.blogPostRepository_)
+		return await blogPostRepository.findOne({
+			relations: {
+				category: true,
+				tags: true,
+				products: true,
+				collections: true
+			},
+			where: { handle }
 		})
 	}
 
@@ -175,9 +282,4 @@ export default class BlogService extends TransactionBaseService {
 		const blogTagRepository = this.activeManager_.withRepository(this.blogTagRepository_)
 		return await blogTagRepository.delete(id)
 	}
-
-	async 
-
-
-
 }
