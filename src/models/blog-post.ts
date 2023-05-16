@@ -8,7 +8,7 @@ import { BlogTag } from "./blog-tag"
 export class BlogPost extends BaseEntity {
 
 	@Index({ unique: true })
-	@Column({ type: "varchar", nullable: true })
+	@Column({ type: "varchar", nullable: false })
 	handle: string | null
 
 	@Column({ type: "varchar", nullable: false })

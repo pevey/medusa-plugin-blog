@@ -46,7 +46,7 @@ export default class BlogService extends TransactionBaseService {
 
 	async addBlogCategory (category) {
 		const { handle, title, description, keywords, metadata } = category
-		if (!title) throw new Error("Adding a blog category requires a title")
+		if (!handle || !title) throw new Error("Adding a blog category requires a unique handle and a title")
 		/* @ts-ignore */
 		const blogCategoryRepository = this.activeManager_.withRepository(this.blogCategoryRepository_)
 		const createdCategory = blogCategoryRepository.create({
@@ -62,7 +62,7 @@ export default class BlogService extends TransactionBaseService {
 
 	async updateBlogCategory (id, category) {
 		const { handle, title, description, keywords, metadata } = category
-		if (!id || !title) throw new Error("Updating a blog category requires an id and a title")
+		if (!id || !title || !title) throw new Error("Updating a blog category requires an id, a unique handle, and a title")
 		/* @ts-ignore */
 		const blogCategoryRepository = this.activeManager_.withRepository(this.blogCategoryRepository_)
 		const blogCategory = blogCategoryRepository.update(id, {
@@ -205,7 +205,7 @@ export default class BlogService extends TransactionBaseService {
 
 	async addBlogPost(post) {
 		const { handle, title, author, published, content, description, keywords, category_id, tag_ids, product_ids, collection_ids, metadata } = post
-		if (!title) throw new Error("Adding a blog post requires a title")
+		if (!handle || !title) throw new Error("Adding a blog post requires a unique handle and a title")
 		let tags = []
 		if (tag_ids) {
 			/* @ts-ignore */
@@ -261,7 +261,7 @@ export default class BlogService extends TransactionBaseService {
 	
 	async updateBlogPost(id, post) {
 		const { handle, title, author, published, content, description, keywords, category_id, tag_ids, product_ids, collection_ids, metadata } = post
-		if (!id || !title) throw new Error("Updating a blog post requires an id and a title")
+		if (!id || !handle || !title) throw new Error("Updating a blog post requires an id, a unique handle, and a title")
 		let tags = []
 		if (tag_ids) {
 			/* @ts-ignore */
