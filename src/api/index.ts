@@ -14,18 +14,26 @@ export default (rootDirectory: string): Router | Router[] => {
 	const router = Router()
 
 	// GET ALL BLOG POSTS
-	router.get("/store/blog", cors(storeCorsOptions), async (req, res) => {
+	router.get("/store/blog/posts", cors(storeCorsOptions), async (req, res) => {
 		const blogService = req.scope.resolve("blogService")
 		blogService.getBlogPosts().then((blog_posts) => {
-			return res.json({blog_posts})
+			return res.json(blog_posts)
+		})
+	})
+
+	// GET ALL BLOG POSTS BY CATEGORY
+	router.get("/store/blog/category-posts/:handle", cors(storeCorsOptions), async (req, res) => {
+		const blogService = req.scope.resolve("blogService")
+		blogService.getBlogPostsByCategoryHandle(req.params.handle).then((blog_posts) => {
+			return res.json(blog_posts)
 		})
 	})
 
 	// GET A SINGLE BLOG POST BY HANDLE
-	router.get("/store/blog/:handle", cors(storeCorsOptions), async (req, res) => {
+	router.get("/store/blog/posts/:handle", cors(storeCorsOptions), async (req, res) => {
 		const blogService = req.scope.resolve("blogService")
 		blogService.getBlogPostByHandle(req.params.handle).then((blog_post) => {
-			return res.json({blog_post})
+			return res.json(blog_post)
 		})
 	})
 
@@ -33,7 +41,7 @@ export default (rootDirectory: string): Router | Router[] => {
 	router.get("/store/blog/categories", cors(storeCorsOptions), async (req, res) => {
 		const blogService = req.scope.resolve("blogService")
 		blogService.getBlogCategories().then((blog_categories) => {
-			return res.json({blog_categories})
+			return res.json(blog_categories)
 		})
 	})
 
@@ -41,7 +49,7 @@ export default (rootDirectory: string): Router | Router[] => {
 	router.get("/store/blog/categories/:handle", cors(storeCorsOptions), async (req, res) => {
 		const blogService = req.scope.resolve("blogService")
 		blogService.getBlogCategoryByHandle(req.params.handle).then((blog_category) => {
-			return res.json({blog_category})
+			return res.json(blog_category)
 		})
 	})
 
@@ -49,7 +57,7 @@ export default (rootDirectory: string): Router | Router[] => {
 	router.get("/store/blog/tags", cors(storeCorsOptions), async (req, res) => {
 		const blogService = req.scope.resolve("blogService")
 		blogService.getBlogTags().then((blog_tags) => {
-			return res.json({blog_tags})
+			return res.json(blog_tags)
 		})
 	})
 
@@ -59,11 +67,11 @@ export default (rootDirectory: string): Router | Router[] => {
 		const blogService = req.scope.resolve("blogService")
 		if (Array.isArray(tags)) { 
 			blogService.getBlogPostsAllTags(tags).then((blog_posts) => {
-				return res.json({blog_posts})
+				return res.json(blog_posts)
 			})
 		} else {
 			blogService.getBlogPostsByTag(tags).then((blog_posts) => {
-				return res.json({blog_posts})
+				return res.json(blog_posts)
 			})
 		}
 	})
@@ -72,7 +80,7 @@ export default (rootDirectory: string): Router | Router[] => {
 	router.get("/store/blog/products/:id", cors(storeCorsOptions), async (req, res) => {
 		const blogService = req.scope.resolve("blogService")
 		blogService.getBlogPostsByProduct(req.params.id).then((blog_posts) => {
-			return res.json({blog_posts})
+			return res.json(blog_posts)
 		})
 	})
 
@@ -80,7 +88,7 @@ export default (rootDirectory: string): Router | Router[] => {
 	router.get("/store/blog/collections/:id", cors(storeCorsOptions), async (req, res) => {
 		const blogService = req.scope.resolve("blogService")
 		blogService.getBlogPostsByCollection(req.params.id).then((blog_posts) => {
-			return res.json({blog_posts})
+			return res.json(blog_posts)
 		})
 	})
 
@@ -101,7 +109,7 @@ export default (rootDirectory: string): Router | Router[] => {
 		}
 		const blogService = req.scope.resolve("blogService")
 		blogService.addBlogCategory(data).then((blog_category) => {
-			return res.json({blog_category})
+			return res.json(blog_category)
 		})
 	})
 
@@ -122,7 +130,7 @@ export default (rootDirectory: string): Router | Router[] => {
 		}
 		const blogService = req.scope.resolve("blogService")
 		blogService.updateBlogCategory(req.params.id, data).then((blog_category) => {
-			return res.json({blog_category})
+			return res.json(blog_category)
 		})
 	})
 
@@ -158,7 +166,7 @@ export default (rootDirectory: string): Router | Router[] => {
 		}
 		const blogService = req.scope.resolve("blogService")
 		blogService.addBlogPost(data).then((blog_post) => {
-			return res.json({blog_post})
+			return res.json(blog_post)
 		})
 	})
 
@@ -183,7 +191,7 @@ export default (rootDirectory: string): Router | Router[] => {
 		}
 		const blogService = req.scope.resolve("blogService")
 		blogService.updateBlogPost(req.params.id, data).then((blog_post) => {
-			return res.json({blog_post})
+			return res.json(blog_post)
 		})
 	})
 
@@ -208,7 +216,7 @@ export default (rootDirectory: string): Router | Router[] => {
 		}
 		const blogService = req.scope.resolve("blogService")
 		blogService.addBlogTag(data.value).then((blog_tag) => {
-			return res.json({blog_tag})
+			return res.json(blog_tag)
 		})
 	})
 
@@ -225,7 +233,7 @@ export default (rootDirectory: string): Router | Router[] => {
 		}
 		const blogService = req.scope.resolve("blogService")
 		blogService.updateBlogTag(req.params.id, data.value).then((blog_tag) => {
-			return res.json({blog_tag})
+			return res.json(blog_tag)
 		})
 	})
 
