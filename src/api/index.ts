@@ -37,7 +37,7 @@ export default (rootDirectory: string): Router | Router[] => {
 		})
 	})
 
-	// GET A SINGLE BLOG CATEGORY BY HANDLE
+	// GET A BLOG CATEGORY BY HANDLE
 	router.get("/store/blog/categories/:handle", cors(storeCorsOptions), async (req, res) => {
 		const blogService = req.scope.resolve("blogService")
 		blogService.getBlogCategoryByHandle(req.params.handle).then((blog_category) => {
