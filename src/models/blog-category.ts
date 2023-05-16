@@ -26,6 +26,6 @@ export class BlogCategory extends BaseEntity {
 
 	@BeforeInsert()
 	private beforeInsert(): void {
-		this.id = generateEntityId(this.id, "post")
+		this.id = generateEntityId(this.id, "bcat")
 	}
 }

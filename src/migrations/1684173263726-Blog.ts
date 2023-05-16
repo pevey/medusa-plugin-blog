@@ -9,7 +9,9 @@ export class Blog1684173263726 implements MigrationInterface {
 			"title" character varying NOT NULL,
 			"description" character varying,
 			"keywords" varchar array,
-			"metadata" jsonb)`
+			"metadata" jsonb,
+			"created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
+			"updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now())`
 		)
 		await queryRunner.createPrimaryKey("blog_category", ["id"])
 
@@ -38,7 +40,9 @@ export class Blog1684173263726 implements MigrationInterface {
 
 		await queryRunner.query(
 			`CREATE TABLE IF NOT EXISTS "blog_tag" ("id" character varying NOT NULL,
-			"value" character varying NOT NULL)`
+			"value" character varying NOT NULL,
+			"created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
+			"updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now())`
 		)
 		await queryRunner.createPrimaryKey("blog_tag", ["id"])
 

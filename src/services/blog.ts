@@ -1,16 +1,22 @@
 import { TransactionBaseService } from '@medusajs/utils'
+import { ProductRepository } from '@medusajs/medusa/dist/repositories/product'
+import { ProductCollectionRepository } from '@medusajs/medusa/dist/repositories/product-collection'
 import { BlogCategoryRepository } from '../repositories/blog-category'
 import { BlogPostRepository } from '../repositories/blog-post'
 import { BlogTagRepository } from '../repositories/blog-tag'
 import { ArrayContains, ArrayOverlap } from 'typeorm'
 
 export default class BlogService extends TransactionBaseService {
+	protected readonly productRepository_: typeof ProductRepository
+	protected readonly productCollectionRepository_: typeof ProductCollectionRepository
 	protected readonly blogCategoryRepository_: typeof BlogCategoryRepository
 	protected readonly blogPostRepository_: typeof BlogPostRepository
 	protected readonly blogTagRepository_: typeof BlogTagRepository
 
-	constructor({ blogCategoryRepository, blogPostRepository, blogTagRepository }) {
+	constructor({ productRepository, productCollectionRepository, blogCategoryRepository, blogPostRepository, blogTagRepository }) {
 		super(arguments[0])
+		this.productRepository_ = productRepository
+		this.productCollectionRepository_ = productCollectionRepository
 		this.blogCategoryRepository_ = blogCategoryRepository
 		this.blogPostRepository_ = blogPostRepository
 		this.blogTagRepository_ = blogTagRepository
@@ -198,8 +204,41 @@ export default class BlogService extends TransactionBaseService {
 	}
 
 	async addBlogPost(post) {
-		const { handle, title, author, published, content, description, keywords, category_id, tags, products, collections, metadata } = post
+		const { handle, title, author, published, content, description, keywords, category_id, tag_ids, product_ids, collection_ids, metadata } = post
 		if (!title) throw new Error("Adding a blog post requires a title")
+		let tags = []
+		if (tag_ids) {
+			/* @ts-ignore */
+			const blogTagRepository = this.activeManager_.withRepository(this.blogTagRepository_)
+			for (const tag_id of tag_ids) {
+				const tag = await blogTagRepository.findOne({ where: { id: tag_id } })
+				if (tag) {
+					tags.push(tag)
+				}
+			}
+		}
+		let products = []
+		if (product_ids) {
+			/* @ts-ignore */
+			const productRepository = this.activeManager_.withRepository(this.productRepository_)
+			for (const product_id of product_ids) {
+				const product = await productRepository.findOne({ where: { id: product_id } })
+				if (product) {
+					products.push(product)
+				}
+			}
+		}
+		let collections = []
+		if (collection_ids) {
+			/* @ts-ignore */
+			const productCollectionRepository = this.activeManager_.withRepository(this.productCollectionRepository_)
+			for (const collection_id of collection_ids) {
+				const collection = await productCollectionRepository.findOne({ where: { id: collection_id } })
+				if (collection) {
+					collections.push(collection)
+				}
+			}
+		}
 		/* @ts-ignore */
 		const blogPostRepository = this.activeManager_.withRepository(this.blogPostRepository_)
 		const createdPost = blogPostRepository.create({
@@ -221,8 +260,41 @@ export default class BlogService extends TransactionBaseService {
 	}
 	
 	async updateBlogPost(id, post) {
-		const { handle, title, author, published, content, description, keywords, category_id, tags, products, collections, metadata } = post
+		const { handle, title, author, published, content, description, keywords, category_id, tag_ids, product_ids, collection_ids, metadata } = post
 		if (!id || !title) throw new Error("Updating a blog post requires an id and a title")
+		let tags = []
+		if (tag_ids) {
+			/* @ts-ignore */
+			const blogTagRepository = this.activeManager_.withRepository(this.blogTagRepository_)
+			for (const tag_id of tag_ids) {
+				const tag = await blogTagRepository.findOne({ where: { id: tag_id } })
+				if (tag) {
+					tags.push(tag)
+				}
+			}
+		}
+		let products = []
+		if (product_ids) {
+			/* @ts-ignore */
+			const productRepository = this.activeManager_.withRepository(this.productRepository_)
+			for (const product_id of product_ids) {
+				const product = await productRepository.findOne({ where: { id: product_id } })
+				if (product) {
+					products.push(product)
+				}
+			}
+		}
+		let collections = []
+		if (collection_ids) {
+			/* @ts-ignore */
+			const productCollectionRepository = this.activeManager_.withRepository(this.productCollectionRepository_)
+			for (const collection_id of collection_ids) {
+				const collection = await productCollectionRepository.findOne({ where: { id: collection_id } })
+				if (collection) {
+					collections.push(collection)
+				}
+			}
+		}		
 		/* @ts-ignore */
 		const blogPostRepository = this.activeManager_.withRepository(this.blogPostRepository_)
 		const blogPost = blogPostRepository.update(id, {
@@ -256,7 +328,7 @@ export default class BlogService extends TransactionBaseService {
 	}
 
 	async addBlogTag(value) {
-		if (!value) throw new Error("Adding a blog tag requires a title")
+		if (!value) throw new Error("Adding a blog tag requires a value")
 		/* @ts-ignore */
 		const blogTagRepository = this.activeManager_.withRepository(this.blogTagRepository_)
 		const createdTag = blogTagRepository.create({
@@ -267,7 +339,7 @@ export default class BlogService extends TransactionBaseService {
 	}
 
 	async updateBlogTag(id, value) {
-		if (!id || !value) throw new Error("Updating a blog tag requires an id and a title")
+		if (!id || !value) throw new Error("Updating a blog tag requires an id and a value")
 		/* @ts-ignore */
 		const blogTagRepository = this.activeManager_.withRepository(this.blogTagRepository_)
 		const blogTag = blogTagRepository.update(id, {

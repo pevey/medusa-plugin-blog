@@ -13,7 +13,7 @@ export default (rootDirectory: string): Router | Router[] => {
 
 	const router = Router()
 
-	// BLOG - GET ALL BLOG POSTS
+	// GET ALL BLOG POSTS
 	router.get("/store/blog", cors(storeCorsOptions), async (req, res) => {
 		const blogService = req.scope.resolve("blogService")
 		blogService.getBlogPosts().then((blog_posts) => {
@@ -21,7 +21,7 @@ export default (rootDirectory: string): Router | Router[] => {
 		})
 	})
 
-	// BLOG - GET A SINGLE BLOG POST BY HANDLE
+	// GET A SINGLE BLOG POST BY HANDLE
 	router.get("/store/blog/:handle", cors(storeCorsOptions), async (req, res) => {
 		const blogService = req.scope.resolve("blogService")
 		blogService.getBlogPostByHandle(req.params.handle).then((blog_post) => {
@@ -29,7 +29,7 @@ export default (rootDirectory: string): Router | Router[] => {
 		})
 	})
 
-	// BLOG - GET ALL BLOG CATEGORIES
+	// GET ALL BLOG CATEGORIES
 	router.get("/store/blog/categories", cors(storeCorsOptions), async (req, res) => {
 		const blogService = req.scope.resolve("blogService")
 		blogService.getBlogCategories().then((blog_categories) => {
@@ -37,7 +37,7 @@ export default (rootDirectory: string): Router | Router[] => {
 		})
 	})
 
-	// BLOG - GET A SINGLE BLOG CATEGORY BY HANDLE
+	// GET A SINGLE BLOG CATEGORY BY HANDLE
 	router.get("/store/blog/categories/:handle", cors(storeCorsOptions), async (req, res) => {
 		const blogService = req.scope.resolve("blogService")
 		blogService.getBlogCategoryByHandle(req.params.handle).then((blog_category) => {
@@ -45,7 +45,7 @@ export default (rootDirectory: string): Router | Router[] => {
 		})
 	})
 
-	// BLOG - GET ALL BLOG TAGS
+	// GET ALL BLOG TAGS
 	router.get("/store/blog/tags", cors(storeCorsOptions), async (req, res) => {
 		const blogService = req.scope.resolve("blogService")
 		blogService.getBlogTags().then((blog_tags) => {
@@ -53,7 +53,7 @@ export default (rootDirectory: string): Router | Router[] => {
 		})
 	})
 
-	// BLOG - GET ALL BLOG POSTS TAGGED WITH A TAG OR AN ARRAY OF TAGS
+	// GET ALL BLOG POSTS TAGGED WITH A TAG OR AN ARRAY OF TAGS
 	router.get("/store/blog/tags", cors(storeCorsOptions), async (req, res) => {
 		const tags = req.query.tags
 		const blogService = req.scope.resolve("blogService")
@@ -68,7 +68,7 @@ export default (rootDirectory: string): Router | Router[] => {
 		}
 	})
 
-	// BLOG - GET ALL BLOG POSTS TAGGED WITH A PRODUCT
+	// GET ALL BLOG POSTS TAGGED WITH A PRODUCT
 	router.get("/store/blog/products/:id", cors(storeCorsOptions), async (req, res) => {
 		const blogService = req.scope.resolve("blogService")
 		blogService.getBlogPostsByProduct(req.params.id).then((blog_posts) => {
@@ -76,7 +76,7 @@ export default (rootDirectory: string): Router | Router[] => {
 		})
 	})
 
-	// BLOG - GET ALL BLOG POSTS TAGGED WITH A COLLECTION
+	// GET ALL BLOG POSTS TAGGED WITH A COLLECTION
 	router.get("/store/blog/collections/:id", cors(storeCorsOptions), async (req, res) => {
 		const blogService = req.scope.resolve("blogService")
 		blogService.getBlogPostsByCollection(req.params.id).then((blog_posts) => {
@@ -84,7 +84,7 @@ export default (rootDirectory: string): Router | Router[] => {
 		})
 	})
 
-	// BLOG - ADD A BLOG CATEGORY
+	// ADD A BLOG CATEGORY
 	router.use("/admin/blog/categories", bodyParser.json())
 	router.post("/admin/blog/categories", cors(adminCorsOptions), async (req, res) => {
 		const schema = z.object({
@@ -100,12 +100,12 @@ export default (rootDirectory: string): Router | Router[] => {
 			throw new MedusaError(MedusaError.Types.INVALID_DATA, error)
 		}
 		const blogService = req.scope.resolve("blogService")
-		blogService.createBlogCategory(data).then((blog_category) => {
+		blogService.addBlogCategory(data).then((blog_category) => {
 			return res.json({blog_category})
 		})
 	})
 
-	// BLOG - UPDATE A BLOG CATEGORY
+	// UPDATE A BLOG CATEGORY
 	router.use("/admin/blog/categories/:id", bodyParser.json())
 	router.post("/admin/blog/categories/:id", cors(adminCorsOptions), async (req, res) => {
 		const schema = z.object({
@@ -126,7 +126,7 @@ export default (rootDirectory: string): Router | Router[] => {
 		})
 	})
 
-	// BLOG - DELETE A BLOG CATEGORY
+	// DELETE A BLOG CATEGORY
 	router.delete("/admin/blog/categories/:id", cors(adminCorsOptions), async (req, res) => {
 		const blogService = req.scope.resolve("blogService")
 		blogService.deleteBlogCategory(req.params.id).then(() => {
@@ -134,7 +134,7 @@ export default (rootDirectory: string): Router | Router[] => {
 		})
 	})
 
-	// BLOG - ADD A BLOG POST
+	// ADD A BLOG POST
 	router.use("/admin/blog/posts", bodyParser.json())
 	router.post("/admin/blog/posts", cors(adminCorsOptions), async (req, res) => {
 		const schema = z.object({
@@ -146,6 +146,9 @@ export default (rootDirectory: string): Router | Router[] => {
 			description: z.string().optional(),
 			keywords: z.string().array().optional(),
 			category_id: z.string().optional(),
+			tag_ids: z.string().array().optional(),
+			product_ids: z.string().array().optional(),
+			collection_ids: z.string().array().optional(),
 			metadata: z.object({}).passthrough() as z.ZodObject<{}>
 		})
 		/* @ts-ignore */
@@ -159,7 +162,7 @@ export default (rootDirectory: string): Router | Router[] => {
 		})
 	})
 
-	// BLOG - UPDATE A BLOG POST
+	// UPDATE A BLOG POST
 	router.use("/admin/blog/posts/:id", bodyParser.json())
 	router.post("/admin/blog/posts/:id", cors(adminCorsOptions), async (req, res) => {
 		const schema = z.object({
@@ -184,7 +187,7 @@ export default (rootDirectory: string): Router | Router[] => {
 		})
 	})
 
-	// BLOG - DELETE A BLOG POST
+	// DELETE A BLOG POST
 	router.delete("/admin/blog/posts/:id", cors(adminCorsOptions), async (req, res) => {
 		const blogService = req.scope.resolve("blogService")
 		blogService.deleteBlogPost(req.params.id).then(() => {
@@ -192,7 +195,7 @@ export default (rootDirectory: string): Router | Router[] => {
 		})
 	})
 
-	// BLOG - ADD A BLOG TAG
+	// ADD A BLOG TAG
 	router.use("/admin/blog/tags", bodyParser.json())
 	router.post("/admin/blog/tags", cors(adminCorsOptions), async (req, res) => {
 		const schema = z.object({
@@ -209,7 +212,7 @@ export default (rootDirectory: string): Router | Router[] => {
 		})
 	})
 
-	// BLOG - UPDATE A BLOG TAG
+	// UPDATE A BLOG TAG
 	router.use("/admin/blog/tags/:id", bodyParser.json())
 	router.post("/admin/blog/tags/:id", cors(adminCorsOptions), async (req, res) => {
 		const schema = z.object({
@@ -226,7 +229,7 @@ export default (rootDirectory: string): Router | Router[] => {
 		})
 	})
 
-	// BLOG - DELETE A BLOG TAG
+	// DELETE A BLOG TAG
 	router.delete("/admin/blog/tags/:id", cors(adminCorsOptions), async (req, res) => {
 		const blogService = req.scope.resolve("blogService")
 		blogService.deleteBlogTag(req.params.id).then(() => {
