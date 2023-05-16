@@ -178,16 +178,17 @@
             }
         },
         {
-            "name": "Get Blog Category By Handle Copy",
+            "name": "Get Blog Posts By Category Handle",
             "request": {
                 "method": "GET",
                 "url": {
-                    "raw": "http://localhost:9000/store/blog/category-posts/first-category",
+                    "raw": "http://localhost:9000/store/blog/category/first-category/posts",
                     "path": [
                         "store",
                         "blog",
-                        "category-posts",
-                        "first-category"
+                        "category",
+                        "first-category",
+                        "posts"
                     ],
                     "protocol": "http",
                     "host": [

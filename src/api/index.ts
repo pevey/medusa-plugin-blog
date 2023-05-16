@@ -22,7 +22,7 @@ export default (rootDirectory: string): Router | Router[] => {
 	})
 
 	// GET ALL BLOG POSTS BY CATEGORY
-	router.get("/store/blog/category-posts/:handle", cors(storeCorsOptions), async (req, res) => {
+	router.get("/store/blog/category/:handle/posts", cors(storeCorsOptions), async (req, res) => {
 		const blogService = req.scope.resolve("blogService")
 		blogService.getBlogPostsByCategoryHandle(req.params.handle).then((blog_posts) => {
 			return res.json(blog_posts)
