@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.0.3
+
+### Patch Changes
+
+- Add relations to blog post GET endpoint
+
 ## 0.0.2
 
 ### Patch Changes

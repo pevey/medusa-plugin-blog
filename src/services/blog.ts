@@ -85,13 +85,26 @@ export default class BlogService extends TransactionBaseService {
 	async getBlogPosts() {
 		/* @ts-ignore */
 		const blogPostRepository = this.activeManager_.withRepository(this.blogPostRepository_)
-		return await blogPostRepository.find()
+		return await blogPostRepository.find({
+			relations: {
+				category: true,
+				tags: true,
+				products: true,
+				collections: true
+			}
+		})
 	}
 
 	async getBlogPostsByCategory(category_id) {
 		/* @ts-ignore */
 		const blogPostRepository = this.activeManager_.withRepository(this.blogPostRepository_)
 		return await blogPostRepository.find({
+			relations: {
+				category: true,
+				tags: true,
+				products: true,
+				collections: true
+			},
 			where: { category_id }
 		})
 	}
