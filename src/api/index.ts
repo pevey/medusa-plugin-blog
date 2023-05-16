@@ -182,6 +182,9 @@ export default (rootDirectory: string): Router | Router[] => {
 			description: z.string().optional(),
 			keywords: z.string().array().optional(),
 			category_id: z.string().optional(),
+			tag_ids: z.string().array().optional(),
+			product_ids: z.string().array().optional(),
+			collection_ids: z.string().array().optional(),
 			metadata: z.object({}).passthrough() as z.ZodObject<{}>
 		})
 		/* @ts-ignore */

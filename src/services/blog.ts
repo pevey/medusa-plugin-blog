@@ -275,55 +275,61 @@ export default class BlogService extends TransactionBaseService {
 	async updateBlogPost(id, post) {
 		const { handle, title, author, published, content, description, keywords, category_id, tag_ids, product_ids, collection_ids, metadata } = post
 		if (!id || !handle || !title) throw new Error("Updating a blog post requires an id, a unique handle, and a title")
-		let tags = []
+		/* @ts-ignore */
+		const blogPostRepository = this.activeManager_.withRepository(this.blogPostRepository_)
+		const existingPost = await blogPostRepository.findOne({ 
+			relations: {
+				category: true,
+				tags: true,
+				products: true,
+				collections: true
+			},
+			where: { id } 
+		})
+		if (!existingPost) throw new Error("No blog post found with that id")
+		existingPost.handle = handle
+		existingPost.title = title
+		existingPost.author = author
+		existingPost.published = published
+		existingPost.content = content
+		existingPost.description = description
+		existingPost.keywords = keywords
+		existingPost.category_id = category_id
+		existingPost.metadata = metadata
+		existingPost.tags = []
 		if (tag_ids) {
 			/* @ts-ignore */
 			const blogTagRepository = this.activeManager_.withRepository(this.blogTagRepository_)
 			for (const tag_id of tag_ids) {
 				const tag = await blogTagRepository.findOne({ where: { id: tag_id } })
 				if (tag) {
-					tags.push(tag)
+					existingPost.tags.push(tag)
 				}
 			}
 		}
-		let products = []
+		existingPost.products = []
 		if (product_ids) {
 			/* @ts-ignore */
 			const productRepository = this.activeManager_.withRepository(this.productRepository_)
 			for (const product_id of product_ids) {
 				const product = await productRepository.findOne({ where: { id: product_id } })
 				if (product) {
-					products.push(product)
+					existingPost.products.push(product)
 				}
 			}
 		}
-		let collections = []
+		existingPost.collections = []
 		if (collection_ids) {
 			/* @ts-ignore */
 			const productCollectionRepository = this.activeManager_.withRepository(this.productCollectionRepository_)
 			for (const collection_id of collection_ids) {
 				const collection = await productCollectionRepository.findOne({ where: { id: collection_id } })
 				if (collection) {
-					collections.push(collection)
+					existingPost.collections.push(collection)
 				}
 			}
 		}		
-		/* @ts-ignore */
-		const blogPostRepository = this.activeManager_.withRepository(this.blogPostRepository_)
-		const blogPost = blogPostRepository.update(id, {
-			handle,
-			title,
-			author,
-			published,
-			content,
-			description,
-			keywords,
-			category_id,
-			tags,
-			products,
-			collections,
-			metadata
-		})
+		const blogPost = await blogPostRepository.save(existingPost)
 		return blogPost
 	}
 
