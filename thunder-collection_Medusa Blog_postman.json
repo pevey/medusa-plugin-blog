@@ -1,0 +1,221 @@
+{
+    "info": {
+        "name": "Medusa Blog",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "description": ""
+    },
+    "item": [
+        {
+            "name": "Add Blog Category",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "http://localhost:9000/admin/blog/categories",
+                    "path": [
+                        "admin",
+                        "blog",
+                        "categories"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "9000"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"handle\":\"first-category\",\n  \"title\": \"First Category\",\n  \"description\":\"This is the very first category\",\n  \"keywords\":[\"first\",\"category\"],\n  \"metadata\":{\"key\":\"value\"}\n}"
+                }
+            }
+        },
+        {
+            "name": "Add Blog Tag",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "http://localhost:9000/admin/blog/tags",
+                    "path": [
+                        "admin",
+                        "blog",
+                        "tags"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "9000"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"value\":\"sort of awesome\"\n}"
+                }
+            }
+        },
+        {
+            "name": "Add Blog Post",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "http://localhost:9000/admin/blog/posts",
+                    "path": [
+                        "admin",
+                        "blog",
+                        "posts"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "9000"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"handle\":\"first-post\",\n  \"title\": \"First Post\",\n  \"author\": \"Me\",\n  \"published\": true,\n  \"content\": \"the whole post\",\n  \"description\":\"This is the very first category\",\n  \"keywords\":[\"first\",\"post\"],\n  \"category_id\": \"bcat_01H0J9XY05G0ATDD5QR5VQ979A\",\n  \"metadata\":{\"key\":\"value\"},\n  \"tag_ids\":[\"btag_01H0J9XVFFE1JZG221ZEBFXN6Z\"],\n  \"product_ids\":[\"prod_01GQ5H6DRN28KJXQKV81M1Z73G\"]\n}"
+                }
+            }
+        },
+        {
+            "name": "Update Blog Post",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "http://localhost:9000/admin/blog/posts/post_01H0JG1QSZNEYGSQAYAXEBEVQ2",
+                    "path": [
+                        "admin",
+                        "blog",
+                        "posts",
+                        "post_01H0JG1QSZNEYGSQAYAXEBEVQ2"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "9000"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"handle\":\"first-post\",\n  \"title\": \"First Post\",\n  \"author\": \"Me\",\n  \"published\": true,\n  \"content\": \"the whole post\",\n  \"description\":\"This is the very first category\",\n  \"keywords\":[\"first\",\"post\"],\n  \"category_id\": \"bcat_01H0J9XY05G0ATDD5QR5VQ979A\",\n  \"metadata\":{\"key\":\"value\"},\n  \"tag_ids\":[\"btag_01H0J9XVFFE1JZG221ZEBFXN6Z\",\"btag_01H0JHBW3XC8PYCTB5WCZC3C2K\"],\n  \"product_ids\":[\"prod_01GQ5H6DRN28KJXQKV81M1Z73G\"]\n}"
+                }
+            }
+        },
+        {
+            "name": "Delete Blog Post",
+            "request": {
+                "method": "DELETE",
+                "url": {
+                    "raw": "http://localhost:9000/admin/blog/posts/post_01H0J9ZG0XVZG53PRWGTQMPQ3N",
+                    "path": [
+                        "admin",
+                        "blog",
+                        "posts",
+                        "post_01H0J9ZG0XVZG53PRWGTQMPQ3N"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "9000"
+                }
+            }
+        },
+        {
+            "name": "Get Blog Posts",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "http://localhost:9000/store/blog/posts",
+                    "path": [
+                        "store",
+                        "blog",
+                        "posts"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "9000"
+                }
+            }
+        },
+        {
+            "name": "Get Blog Category By Handle",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "http://localhost:9000/store/blog/categories/first-category",
+                    "path": [
+                        "store",
+                        "blog",
+                        "categories",
+                        "first-category"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "9000"
+                }
+            }
+        },
+        {
+            "name": "Get Blog Category By Handle Copy",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "http://localhost:9000/store/blog/category-posts/first-category",
+                    "path": [
+                        "store",
+                        "blog",
+                        "category-posts",
+                        "first-category"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "9000"
+                }
+            }
+        },
+        {
+            "name": "Get Blog Post By Handle",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "http://localhost:9000/store/blog/posts/first-post",
+                    "path": [
+                        "store",
+                        "blog",
+                        "posts",
+                        "first-post"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "9000"
+                }
+            }
+        }
+    ]
+}
