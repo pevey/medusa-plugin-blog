@@ -4,7 +4,6 @@ import { ProductCollectionRepository } from '@medusajs/medusa/dist/repositories/
 import { BlogCategoryRepository } from '../repositories/blog-category'
 import { BlogPostRepository } from '../repositories/blog-post'
 import { BlogTagRepository } from '../repositories/blog-tag'
-import { ArrayContains, ArrayOverlap } from 'typeorm'
 
 export default class BlogService extends TransactionBaseService {
 	protected readonly productRepository_: typeof ProductRepository
@@ -126,65 +125,66 @@ export default class BlogService extends TransactionBaseService {
 	async getBlogPostsByTag(tag_id) {
 		/* @ts-ignore */
 		const blogPostRepository = this.activeManager_.withRepository(this.blogPostRepository_)
-		return await blogPostRepository.find({
-			relations: {
-				category: true,
-				tags: true,
-				products: true,
-				collections: true
-			},
-			where: {
-				tags: ArrayContains(tag_id)
-			}
-		})
+		return await blogPostRepository.createQueryBuilder('blog_post')
+			.leftJoinAndSelect('blog_post.tags', 'tags')
+			.leftJoinAndSelect('blog_post.category', 'category')
+			.leftJoinAndSelect('blog_post.products', 'products')
+			.leftJoinAndSelect('blog_post.collections', 'collections')
+			.where('tags.id = :tag_id)', { tag_id })
+			.getMany()
 	}
 
 	async getBlogPostsAllTags(tag_ids) {
 		/* @ts-ignore */
 		const blogPostRepository = this.activeManager_.withRepository(this.blogPostRepository_)
-		return await blogPostRepository.find({
-			relations: {
-				category: true,
-				tags: true,
-				products: true,
-				collections: true
-			},
-			where: {
-				tags: ArrayOverlap(tag_ids)
-			}
-		})
+		// return await blogPostRepository.createQueryBuilder('blog_post')
+		// 	.leftJoinAndSelect('blog_post.category', 'category')
+		// 	.leftJoinAndSelect('blog_post.products', 'products')
+		// 	.leftJoinAndSelect('blog_post.collections', 'collections')
+		// 	.innerJoinAndSelect('blog_post.tags', 'tags', 'tags.id IN (:...tag_ids)', { tag_ids })
+		// 	.getMany()
+		// return await blogPostRepository.createQueryBuilder('blog_post')
+		// 	.leftJoinAndSelect('blog_post.tags', 'tags')
+		// 	.leftJoinAndSelect('blog_post.category', 'category')
+		// 	.leftJoinAndSelect('blog_post.products', 'products')
+		// 	.leftJoinAndSelect('blog_post.collections', 'collections')
+		// 	.where('tags.id IN (:...tag_ids)', { tag_ids })
+		// 	.getMany()
 	}
-	
-	async getBlogPostsByProduct(product_id) {
+
+	async getBlogPostsByTags(tag_ids:number[]) {
 		/* @ts-ignore */
 		const blogPostRepository = this.activeManager_.withRepository(this.blogPostRepository_)
-		return await blogPostRepository.find({
-			relations: {
-				category: true,
-				tags: true,
-				products: true,
-				collections: true
-			},
-			where: { 
-				products: ArrayContains(product_id) 
-			}
-		})
+		return await blogPostRepository.createQueryBuilder('blog_post')
+			.innerJoinAndSelect('blog_post.tags', 'tags', 'tags.id IN (:...tag_ids)', { tag_ids })
+			.leftJoinAndSelect('blog_post.category', 'category')
+			.leftJoinAndSelect('blog_post.products', 'products')
+			.leftJoinAndSelect('blog_post.collections', 'collections')
+			.getMany()
+	}
+	
+	async getBlogPostsByProduct(product_id:string) {
+		/* @ts-ignore */
+		const blogPostRepository = this.activeManager_.withRepository(this.blogPostRepository_)
+		return await blogPostRepository.createQueryBuilder('blog_post')
+			.leftJoinAndSelect('blog_post.tags', 'tags')
+			.leftJoinAndSelect('blog_post.category', 'category')
+			.leftJoinAndSelect('blog_post.products', 'products')
+			.leftJoinAndSelect('blog_post.collections', 'collections')
+			.where('products.id = :product_id', { product_id })
+			.getMany()
 	}
 
 	async getBlogPostsByCollection(collection_id) {
 		/* @ts-ignore */
 		const blogPostRepository = this.activeManager_.withRepository(this.blogPostRepository_)
-		return await blogPostRepository.find({
-			relations: {
-				category: true,
-				tags: true,
-				products: true,
-				collections: true
-			},
-			where: {
-				collections: ArrayContains(collection_id)
-			}
-		})
+		return await blogPostRepository.createQueryBuilder('blog_post')
+			.leftJoinAndSelect('blog_post.tags', 'tags')
+			.leftJoinAndSelect('blog_post.category', 'category')
+			.leftJoinAndSelect('blog_post.products', 'products')
+			.leftJoinAndSelect('blog_post.collections', 'collections')
+			.where('collections.id = :collection_id)', { collection_id })
+			.getMany()
 	}
 	
 

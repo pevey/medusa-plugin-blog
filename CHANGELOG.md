@@ -1,5 +1,13 @@
 # Change Log
 
+## 0.0.4
+
+### Patch Changes
+
+- Changes to retrieve by tag endpoints
+
+# Change Log
+
 ## 0.0.3
 
 ### Patch Changes

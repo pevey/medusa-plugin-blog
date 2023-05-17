@@ -62,18 +62,14 @@ export default (rootDirectory: string): Router | Router[] => {
 	})
 
 	// GET ALL BLOG POSTS TAGGED WITH A TAG OR AN ARRAY OF TAGS
-	router.get("/store/blog/tags", cors(storeCorsOptions), async (req, res) => {
-		const tags = req.query.tags
+	// Ex: /store/blog/tags/posts?tag=tag1&tag=tag2&tag=tag3
+	router.get("/store/blog/tags/posts", cors(storeCorsOptions), async (req, res) => {
+		if (!req.query.tag) { return res.json([]) }
+		const tag_ids = (typeof req.query.tag === "string")? [req.query.tag] : req.query.tag
 		const blogService = req.scope.resolve("blogService")
-		if (Array.isArray(tags)) { 
-			blogService.getBlogPostsAllTags(tags).then((blog_posts) => {
-				return res.json(blog_posts)
-			})
-		} else {
-			blogService.getBlogPostsByTag(tags).then((blog_posts) => {
-				return res.json(blog_posts)
-			})
-		}
+		blogService.getBlogPostsByTags(tag_ids).then((blog_posts) => {
+			return res.json(blog_posts)
+		})
 	})
 
 	// GET ALL BLOG POSTS TAGGED WITH A PRODUCT
