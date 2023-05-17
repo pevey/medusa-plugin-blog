@@ -1,6 +1,6 @@
 {
 	"name": "medusa-plugin-blog",
-	"version": "0.0.4",
+	"version": "0.0.5",
 	"description": "Basic blog for Medusa",
 	"repository": {
 		"type": "git",

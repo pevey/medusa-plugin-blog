@@ -122,18 +122,6 @@ export default class BlogService extends TransactionBaseService {
 		})
 	}
 	
-	async getBlogPostsByTag(tag_id) {
-		/* @ts-ignore */
-		const blogPostRepository = this.activeManager_.withRepository(this.blogPostRepository_)
-		return await blogPostRepository.createQueryBuilder('blog_post')
-			.leftJoinAndSelect('blog_post.tags', 'tags')
-			.leftJoinAndSelect('blog_post.category', 'category')
-			.leftJoinAndSelect('blog_post.products', 'products')
-			.leftJoinAndSelect('blog_post.collections', 'collections')
-			.where('tags.id = :tag_id)', { tag_id })
-			.getMany()
-	}
-
 	async getBlogPostsAllTags(tag_ids) {
 		/* @ts-ignore */
 		const blogPostRepository = this.activeManager_.withRepository(this.blogPostRepository_)
@@ -152,7 +140,7 @@ export default class BlogService extends TransactionBaseService {
 		// 	.getMany()
 	}
 
-	async getBlogPostsByTags(tag_ids:number[]) {
+	async getBlogPostsByTag(tag_ids:number[]) {
 		/* @ts-ignore */
 		const blogPostRepository = this.activeManager_.withRepository(this.blogPostRepository_)
 		return await blogPostRepository.createQueryBuilder('blog_post')

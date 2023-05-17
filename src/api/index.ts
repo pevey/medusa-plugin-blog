@@ -67,7 +67,7 @@ export default (rootDirectory: string): Router | Router[] => {
 		if (!req.query.tag) { return res.json([]) }
 		const tag_ids = (typeof req.query.tag === "string")? [req.query.tag] : req.query.tag
 		const blogService = req.scope.resolve("blogService")
-		blogService.getBlogPostsByTags(tag_ids).then((blog_posts) => {
+		blogService.getBlogPostsByTag(tag_ids).then((blog_posts) => {
 			return res.json(blog_posts)
 		})
 	})
