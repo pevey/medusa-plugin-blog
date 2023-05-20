@@ -22,7 +22,7 @@ export default (rootDirectory: string): Router | Router[] => {
 	})
 
 	// GET ALL BLOG POSTS BY CATEGORY
-	router.get("/store/blog/category/:handle/posts", cors(storeCorsOptions), async (req, res) => {
+	router.get("/store/blog/categories/:handle/posts", cors(storeCorsOptions), async (req, res) => {
 		const blogService = req.scope.resolve("blogService")
 		blogService.getBlogPostsByCategoryHandle(req.params.handle).then((blog_posts) => {
 			return res.json(blog_posts)
@@ -92,7 +92,7 @@ export default (rootDirectory: string): Router | Router[] => {
 	router.use("/admin/blog/categories", bodyParser.json())
 	router.post("/admin/blog/categories", cors(adminCorsOptions), async (req, res) => {
 		const schema = z.object({
-			handle: z.string().optional(),
+			handle: z.string().min(1),
 			title: z.string().min(1),
 			description: z.string().optional(),
 			keywords: z.string().array().optional(),
@@ -113,7 +113,7 @@ export default (rootDirectory: string): Router | Router[] => {
 	router.use("/admin/blog/categories/:id", bodyParser.json())
 	router.post("/admin/blog/categories/:id", cors(adminCorsOptions), async (req, res) => {
 		const schema = z.object({
-			handle: z.string().optional(),
+			handle: z.string().min(1),
 			title: z.string().min(1),
 			description: z.string().optional(),
 			keywords: z.string().array().optional(),
