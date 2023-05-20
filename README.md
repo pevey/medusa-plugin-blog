@@ -15,7 +15,7 @@ yarn add medusa-plugin-blog
 
 ## Configuration
 
-```json
+```bash
 const plugins = [
 	...other plugins,
 	{ 
