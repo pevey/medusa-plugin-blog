@@ -5,7 +5,7 @@ Provides a basic blog backend for Medusa.
 - Posts can be tagged with products, collections, and/or custom tag values. 
 - Posts can be queried by tag, category, product, or collection.  
 
-**This plugin is under development and should be considered expirimental.**
+**This plugin is under development and should be considered experimental.**
 
 ## Installation
 
