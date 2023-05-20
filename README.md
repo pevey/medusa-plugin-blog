@@ -16,12 +16,14 @@ yarn add medusa-plugin-blog
 ## Configuration
 
 ```json
-{
-  "plugins": [
-	 "medusa-plugin-blog"
-  ]
-}
-```
+const plugins = [
+	...other plugins,
+	{ 
+		resolve: `medusa-plugin-blog`
+	},
+	...other plugins
+]
+```	
 
 ## API Endpoints
 
