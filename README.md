@@ -17,13 +17,10 @@ yarn add medusa-plugin-blog
 
 ```bash
 const plugins = [
-	...other plugins,
-	{ 
-		resolve: `medusa-plugin-blog`
-	},
-	...other plugins
+  `medusa-plugin-blog`,
+  ...
 ]
-```	
+```
 
 ## API Endpoints
 

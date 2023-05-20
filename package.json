@@ -1,7 +1,7 @@
 {
 	"name": "medusa-plugin-blog",
 	"version": "0.0.7",
-	"description": "Basic blog for Medusa",
+	"description": "Basic blog backend for Medusa",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/pevey/medusa-plugin-blog"
