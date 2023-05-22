@@ -15,8 +15,6 @@ Breaking changes are very likely to occur.
 - Posts can be tagged with products, collections, and/or custom tag values. 
 - Posts can be queried by tag, category, product, or collection.  
 
-**This plugin is under development and should be considered experimental.**
-
 ## Installation
 
 ```bash
