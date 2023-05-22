@@ -6,6 +6,10 @@ If you are not familiar with Medusa, you can learn more on [the project web site
 
 > Medusa is a set of commerce modules and tools that allow you to build rich, reliable, and performant commerce applications without reinventing core commerce logic. The modules can be customized and used to build advanced ecommerce stores, marketplaces, or any product that needs foundational commerce primitives. All modules are open-source and freely available on npm.
 
+### This plugin is under development and should be considered experimental.
+
+Breaking changes are very likely to occur.
+
 ## Features
 
 - Posts can be tagged with products, collections, and/or custom tag values. 
