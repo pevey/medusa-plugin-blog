@@ -1,5 +1,13 @@
 # Change Log
 
+## 0.1.0
+
+### Patch Changes
+
+- Update import paths for compatibility with @medusajs/medusa 1.12.0.
+
+# Change Log
+
 ## 0.0.7
 
 ### Patch Changes

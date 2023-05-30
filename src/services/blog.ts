@@ -1,4 +1,4 @@
-import { TransactionBaseService } from '@medusajs/utils'
+import { TransactionBaseService } from '@medusajs/medusa'
 import { ProductRepository } from '@medusajs/medusa/dist/repositories/product'
 import { ProductCollectionRepository } from '@medusajs/medusa/dist/repositories/product-collection'
 import { BlogCategoryRepository } from '../repositories/blog-category'

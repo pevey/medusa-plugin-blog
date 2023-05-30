@@ -1,5 +1,5 @@
-import { Product, ProductCollection } from "@medusajs/medusa"
-import { BaseEntity, generateEntityId } from "@medusajs/utils"
+import { BaseEntity, Product, ProductCollection } from "@medusajs/medusa"
+import { generateEntityId } from "@medusajs/utils"
 import { BeforeInsert, Column, Entity, Index, JoinColumn, ManyToOne, ManyToMany, JoinTable } from "typeorm"
 import { BlogCategory } from "./blog-category"
 import { BlogTag } from "./blog-tag"

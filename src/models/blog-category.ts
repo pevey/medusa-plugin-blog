@@ -1,4 +1,5 @@
-import { BaseEntity, generateEntityId } from "@medusajs/utils"
+import { BaseEntity } from "@medusajs/medusa"
+import { generateEntityId } from "@medusajs/utils"
 import { BeforeInsert, Column, Entity, Index, OneToMany } from "typeorm"
 import { BlogPost } from "./blog-post"
 
