@@ -67,11 +67,11 @@ create a new blog category object
 Expects body with:
 ```js
 {
-	handle: string!,
-	title: string!,
-	description: string,
-	keywords: string[],
-	metadata: jsonb
+   handle: string!,
+   title: string!,
+   description: string,
+   keywords: string[],
+   metadata: jsonb
 }
 ```
 
@@ -80,11 +80,11 @@ update an existing blog category object with given id
 Expects body with:
 ```js
 {
-	handle: string!,
-	title: string!,
-	description: string,
-	keywords: string[],
-	metadata: jsonb
+   handle: string!,
+   title: string!,
+   description: string,
+   keywords: string[],
+   metadata: jsonb
 }
 ```
 
@@ -96,18 +96,18 @@ create a new blog post object
 Expects body with:
 ```js
 {
-	handle: string!,
-	title: string!,
-	author: string,
-	published: boolean,
-	content: string,
-	description: string,
-	keywords: string[],
-	category_id: string,
-	tag_ids: string[],
-	product_ids: string[],
-	collection_ids: string[],
-	metadata: jsonb
+   handle: string!,
+   title: string!,
+   author: string,
+   published: boolean,
+   content: string,
+   description: string,
+   keywords: string[],
+   category_id: string,
+   tag_ids: string[],
+   product_ids: string[],
+   collection_ids: string[],
+   metadata: jsonb
 }
 ```
 
@@ -116,18 +116,18 @@ update an existing blog post object with given id
 Expects body with:
 ```js
 {
-	handle: string!,
-	title: string!,
-	author: string,
-	published: boolean,
-	content: string,
-	description: string,
-	keywords: string[],
-	category_id: string,
-	tag_ids: string[],
-	product_ids: string[],
-	collection_ids: string[],
-	metadata: jsonb
+   handle: string!,
+   title: string!,
+   author: string,
+   published: boolean,
+   content: string,
+   description: string,
+   keywords: string[],
+   category_id: string,
+   tag_ids: string[],
+   product_ids: string[],
+   collection_ids: string[],
+   metadata: jsonb
 }
 ```
 
@@ -139,7 +139,7 @@ create a new blog tag object
 Expects body with:
 ```js
 {
-	value: string!
+   value: string!
 }
 ```
 
@@ -148,7 +148,7 @@ update an existing blog tag object with given id
 Expects body with:
 ```js
 {
-	value: string!
+   value: string!
 }
 ```
 
@@ -161,22 +161,22 @@ delete an existing blog tag object with given id
 
 ```js
 {
-	id: string!,
-	handle: string!,
-	title: string!,
-	author: string,
-	published: string!,
-	content: string,
-	description: string,
-	keywords: string[],
-	category_id: string,
-	category: Category,
-	tags: BlogTag[],
-	products: Product[],
-	collections: Collection[],
-	metadata: jsonb,
-	created_at: DateTime!,
-	updated_at: DateTime!
+   id: string!,
+   handle: string!,
+   title: string!,
+   author: string,
+   published: string!,
+   content: string,
+   description: string,
+   keywords: string[],
+   category_id: string,
+   category: Category,
+   tags: BlogTag[],
+   products: Product[],
+   collections: Collection[],
+   metadata: jsonb,
+   created_at: DateTime!,
+   updated_at: DateTime!
 }
 ```
 
@@ -184,8 +184,8 @@ delete an existing blog tag object with given id
 
 ```js
 {
-	id: string!,
-	value: string!
+   id: string!,
+   value: string!
 }
 ```
 
@@ -193,13 +193,13 @@ delete an existing blog tag object with given id
 
 ```js
 {
-	id: string!,
-	handle: string!,
-	title: string!,
-	description: string,
-	keywords: string[],
-	metadata: jsonb,
-	posts: BlogPost[]
+   id: string!,
+   handle: string!,
+   title: string!,
+   description: string,
+   keywords: string[],
+   metadata: jsonb,
+   posts: BlogPost[]
 }
 ```
 
