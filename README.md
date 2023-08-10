@@ -21,6 +21,7 @@ Breaking changes are very likely to occur.
 
 ```bash
 yarn add medusa-plugin-blog
+medusa migrations run
 ```
 
 ## Configuration
